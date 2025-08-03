@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lord Bismark | Blog</title>
+    <meta name="description" content="Read Lord Bismarck's latest posts and articles">
+    <meta property="og:title" content="Lord Bismark | Blog">
+    <meta property="og:description" content="Read Lord Bismarck's latest posts and articles">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://me.markmixstudios.com/blog">
+    <meta name="twitter:card" content="https://cdn.jsdelivr.net/gh/onebismark/files@refs/heads/main/bismark.webp">
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    
+    <style>
+        /* Critical CSS - Loads first */
+        :root {
+            --primary: #00d4ff;
+            --secondary: #0077ff;
+            --dark-bg: #0a0a12;
+            --dark-card: rgba(15, 15, 25, 0.75);
+            --light-bg: #f8f9fa;
+            --light-card: rgba(255, 255, 255, 0.85);
+            --text-dark: #f0f0f0;
+            --text-light: #333;
+            --transition: all 0.2s ease;
+            --border-radius: 12px;
+            --max-width: 800px;
+            --gap: 1.5rem;
+            --blur: 8px;
+            --vh: 1vh;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            position: relative;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body.light-mode {
+            background: var(--light-bg);
+            color: var(--text-light);
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--gap);
+            padding: 0 1rem;
+        }
+
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .profile-pic {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid transparent;
+            background: linear-gradient(var(--dark-bg), var(--dark-bg)) padding-box,
+                        linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+        }
+
+        .brand-name {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+
+        .bio {
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 100%;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* Landing page styles */
+        .landing {
+            min-height: calc(100vh - 2rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .landing h1 {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .landing p {
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            max-width: 600px;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .social-icons a {
+            color: var(--text-dark);
+            font-size: 1.5rem;
+            transition: var(--transition);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-icons a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+            background: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        body.light-mode .social-icons a {
+            color: var(--text-light);
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        body.light-mode .social-icons a:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        /* Non-critical CSS - Loads after initial render */
+        .bg-particles, .mouse-follow, .theme-toggle, 
+        body.light-mode .profile-pic, body.light-mode .blog-card,
+        .blog-posts, .modal, .blog-card, .blog-container {
+            display: none;
+        }
+
+        footer {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            text-align: center;
+            width: 100%;
+            padding: 1rem 0;
+        }
+
+        /* Print styles */
+        @media print {
+            .container:not(.blog-container), .theme-toggle, 
+            .bg-particles, .mouse-follow, .landing {
+                display: none;
+            }
+            .blog-container {
+                display: block !important;
+                max-width: 100% !important;
+                padding: 0;
+            }
+            .blog-post {
+                display: block !important;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+    <noscript>
+        <style>
+            .container, .profile, .landing {
+                opacity: 1;
+            }
+            .bg-particles, .mouse-follow, .theme-toggle {
+                display: none;
+            }
+        </style>
+    </noscript>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div class="landing" id="landing">
+        <div class="profile">
+            <img src="https://cdn.jsdelivr.net/gh/bismarkagyapong/files@master/markmix-diamond-profile-pic.webp" 
+                 alt="Profile Picture" class="profile-pic" width="90" height="90" loading="eager">
+            <h1 class="brand-name">𝑴𝒂𝒓𝒌𝒎𝒊𝒙 𝑺𝒕𝒖𝒅𝒊𝒐𝒔</h1>
+            <h1>Welcome to Markmix Blog</h1>
+            <p>Explore my latest articles on technology, development, and creative thinking</p>
+            
+            <div class="social-icons">
+                <a href="https://twitter.com/markmixstudios" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://instagram.com/markmix.studios" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://youtube.com/@markmix.studios" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://facebook.com/onebismark" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="https://github.com/markmixstudios" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://markmixstudios.com" target="_blank" rel="noopener noreferrer" aria-label="Website">
+                    <i class="fas fa-globe"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog posts container -->
+    <div class="blog-posts" id="blog-posts">
+        <!-- Blog posts will be dynamically inserted here -->
+    </div>
+
+    <footer>
+        &copy; <span id="year"></span> Markmix Studios. All rights reserved.
+    </footer>
+
+    <!-- Blog post modal -->
+    <div class="modal" id="post-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-modal" id="close-modal" aria-label="Close modal">&times;</button>
+                <h2 class="modal-title" id="modal-title">Blog Post Title</h2>
+                <span class="modal-date" id="modal-date">June 1, 2023</span>
+            </div>
+            <img src="" alt="" class="modal-image" id="modal-image" loading="lazy">
+            <div class="modal-body" id="modal-body">
+                <!-- Blog post content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Load non-critical CSS async -->
+    <link rel="stylesheet" href="data:text/css;base64,LnRoZW1lLXRvZ2dsZSwgLmJnLXBhcnRpY2xlcywgLm1vdXNlLWZvbGxvdyB7ZGlzcGxheTogbm9uZTt9QG1lZGlhIChtaW4td2lkdGg6IDQ4MXB4KSB7LnRoZW1lLXRvZ2dsZSwgLmJnLXBhcnRpY2xlcywgLm1vdXNlLWZvbGxvdyB7ZGlzcGxheTogYmxvY2s7fX0=" media="print" onload="this.media='all'">
+
+    <!-- Inline script for critical functionality -->
+    <script>
+        // Set copyright year immediately
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Handle route changes
+        function handleRoute() {
+            const hash = window.location.hash.replace('#', '');
+            
+            if (hash === 'blog' || hash.startsWith('blog-post-')) {
+                document.getElementById('landing').style.display = 'none';
+                document.querySelector('.blog-container').style.display = 'flex';
+                
+                if (hash.startsWith('blog-post-')) {
+                    setTimeout(() => {
+                        const postId = hash.split('blog-post-')[1];
+                        openPostModal(parseInt(postId));
+                        window.scrollTo(0, 0);
+                    }, 100);
+                }
+            }
+        }
+
+        // Initialize route handler
+        window.addEventListener('load', function() {
+            // Set mobile viewport height
+            const setVh = () => {
+                document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+            };
+            setVh();
+            window.addEventListener('resize', setVh);
+            
+            // Handle initial route
+            handleRoute();
+        });
+        
+        window.addEventListener('hashchange', handleRoute);
+    </script>
+
+    <!-- Load non-critical JS after initial render -->
+    <script defer>
+        // Blog posts data
+        const blogPosts = [
+            {
+                id: 1,
+                title: "Getting Started with Web Development",
+                date: "2025-07-01",
+                image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                excerpt: "Learn the fundamentals of web development and how to build your first website with HTML, CSS, and JavaScript.",
+                content: `<p>Web development is an exciting field that combines creativity with technical skills. In this post, we'll explore the basics of building websites from scratch.</p>
+                <h3>HTML: The Structure</h3>
+                <p>HTML (HyperText Markup Language) forms the backbone of every website. It provides the structure and content of your pages.</p>
+                <h3>CSS: The Style</h3>
+                <p>CSS (Cascading Style Sheets) brings your HTML to life with colors, layouts, and responsive designs that work across devices.</p>
+                <h3>JavaScript: The Behavior</h3>
+                <p>JavaScript adds interactivity to your websites, allowing you to create dynamic content and handle user interactions.</p>
+                <p>By mastering these three core technologies, you'll have the foundation to build modern, interactive websites.</p>`
+            },
+            {
+                id: 2,
+                title: "Secure Your Accounts: Smart Password Protection Tips",
+                date: "2025-03-26",
+                image: "https://cdn.jsdelivr.net/gh/bismarkagyapong/files@refs/heads/main/password-protection-tips.webp",
+                excerpt: "Know how to keep your online accounts safe.",
+                content: `<p>Your password is the key to your online security. A weak password makes it easy for hackers to steal your data, while a strong one keeps your accounts safe. Here's how to create and manage secure passwords effectively.</p>
+<h3>Best Practices for Strong Passwords</h3>
+<p>✔ <strong>Use a mix of uppercase and lowercase letters, numbers, and symbols.</strong><br />
+✔ <strong>Make it at least 12-16 characters long.</strong><br />
+✔ <strong>Avoid common words, personal details, or predictable sequences.</strong><br />
+✔ <strong>Use a unique password for each account.</strong></p>
+<h3>How to Keep Your Passwords Safe</h3>
+<p>✅ <strong>Enable Two-Factor Authentication (2FA)</strong> - Adds an extra layer of protection.<br />
+✅ <strong>Use a Password Manager</strong> - Stores and generates secure passwords for you.<br />
+✅ <strong>Change Passwords If You Suspect a Breach</strong> - Never wait if an account is compromised.<br />
+✅ <strong>Avoid Writing Down Passwords</strong> - Store them securely instead.<br />
+✅ <strong>Never Share Passwords</strong> - Even with close friends or family.</p>
+<h3>Best Password Example:</h3>
+<p><strong>Weak:</strong> password123, John1990, qwerty<br />
+<strong>Strong:</strong> r7#Tg9!mKz2@Xy</p>
+<p>Taking password security seriously helps protect your identity, finances, and personal data. Strengthen your passwords today and stay safe online!</p>
+<hr />
+<h3>Follow us for more security tips:</h3>
+<ul>
+<li><b>Facebook</b>: <a href="https://facebook.com/onebismark">Markmix Studios</a></li>
+<li><b>Instagram</b>: <a href="https://www.instagram.com/markmix.studios">Markmix Studios</a></li>
+<li><b>YouTube</b>: <a href="https://www.youtube.com/@markmix.studios">Markmix Studios</a></li>
+</ul>`
+            }
+        ];
+
+        // DOM elements
+        const blogPostsContainer = document.getElementById('blog-posts');
+        const postModal = document.getElementById('post-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDate = document.getElementById('modal-date');
+        const modalImage = document.getElementById('modal-image');
+        const modalBody = document.getElementById('modal-body');
+        const closeModalBtn = document.getElementById('close-modal');
+
+        // Theme toggle functionality
+        const themeToggle = document.createElement('div');
+        themeToggle.className = 'theme-toggle';
+        themeToggle.id = 'themeToggle';
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        document.body.appendChild(themeToggle);
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const icon = themeToggle.querySelector('i');
+            
+            if (document.body.classList.contains('light-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+        
+        // Check saved theme
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+        }
+
+        // Mouse follow glow effect
+        const mouseFollow = document.createElement('div');
+        mouseFollow.className = 'mouse-follow';
+        mouseFollow.id = 'mouseFollow';
+        document.body.appendChild(mouseFollow);
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseFollow.style.left = `${e.clientX}px`;
+            mouseFollow.style.top = `${e.clientY}px`;
+        });
+
+        // Create background particles
+        const particles = document.createElement('div');
+        particles.className = 'bg-particles';
+        particles.id = 'particles';
+        document.body.insertBefore(particles, document.body.firstChild);
+        
+        for (let i = 0; i < 5; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.cssText = `
+                width: ${Math.random() * 200 + 100}px;
+                height: ${Math.random() * 200 + 100}px;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                animation-duration: ${Math.random() * 20 + 10}s;
+                animation-delay: ${Math.random() * 5}s;
+            `;
+            particles.appendChild(particle);
+        }
+
+        // Render blog posts
+        function renderBlogPosts() {
+            blogPostsContainer.innerHTML = '';
+            
+            blogPosts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.classList.add('blog-card');
+                postElement.innerHTML = `
+                    <img src="${post.image}" alt="${post.title}" class="blog-image" loading="lazy">
+                    <div class="blog-content">
+                        <span class="blog-date">${new Date(post.date).toLocaleDateString()}</span>
+                        <h3 class="blog-title">${post.title}</h3>
+                        <p class="blog-excerpt">${post.excerpt}</p>
+                        <button class="read-more" data-id="${post.id}" aria-label="Read more about ${post.title}">
+                            Read more <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                `;
+                
+                blogPostsContainer.appendChild(postElement);
+            });
+            
+            // Add event listeners to read more buttons
+            document.querySelectorAll('.read-more').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const postId = parseInt(btn.getAttribute('data-id'));
+                    openPostModal(postId);
+                });
+            });
+            
+            // Add event listener to entire blog card
+            document.querySelectorAll('.blog-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.closest('a') && !e.target.closest('button')) {
+                        const readMoreBtn = card.querySelector('.read-more');
+                        if (readMoreBtn) {
+                            const postId = parseInt(readMoreBtn.getAttribute('data-id'));
+                            openPostModal(postId);
+                        }
+                    }
+                });
+            });
+        }
+
+        // Open post modal
+        function openPostModal(postId) {
+            const post = blogPosts.find(p => p.id === postId);
+            if (post) {
+                modalTitle.textContent = post.title;
+                modalDate.textContent = new Date(post.date).toLocaleDateString();
+                modalImage.src = post.image;
+                modalImage.alt = post.title;
+                modalBody.innerHTML = post.content;
+                
+                // Update URL for shareable link
+                window.location.hash = `blog-post-${postId}`;
+                
+                postModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Add share button functionality
+                const shareBtn = document.createElement('button');
+                shareBtn.className = 'share-button';
+                shareBtn.innerHTML = '<i class="fas fa-share-alt"></i> Share this post';
+                shareBtn.addEventListener('click', () => sharePost(postId, post.title));
+                
+                // Insert share button at the end of modal content
+                const existingShareBtn = modalBody.querySelector('.share-button');
+                if (!existingShareBtn) {
+                    modalBody.appendChild(shareBtn);
+                }
+                
+                // Scroll to top to ensure modal is fully visible
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Share post function
+        function sharePost(postId, title) {
+            const url = `${window.location.origin}${window.location.pathname}#blog-post-${postId}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: 'Check out this blog post:',
+                    url: url
+                }).catch(err => {
+                    console.log('Error sharing:', err);
+                    copyToClipboard(url);
+                });
+            } else {
+                copyToClipboard(url);
+            }
+        }
+
+        // Copy to clipboard fallback
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('Link copied to clipboard!');
+        }
+
+        // Close post modal
+        function closePostModal() {
+            postModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            window.location.hash = 'blog';
+        }
+
+        // Event listeners for modal
+        closeModalBtn.addEventListener('click', closePostModal);
+        postModal.addEventListener('click', (e) => {
+            if (e.target === postModal) {
+                closePostModal();
+            }
+        });
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && postModal.classList.contains('active')) {
+                closePostModal();
+            }
+        });
+
+        // Load remaining styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .bg-particles, .mouse-follow, .theme-toggle, 
+            .blog-posts, .blog-card, .blog-container {
+                display: block;
+            }
+            
+            .particle {
+                position: absolute;
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                border-radius: 50%;
+                filter: blur(40px);
+                opacity: 0.15;
+                animation: float 15s infinite linear;
+                will-change: transform;
+            }
+            
+            @keyframes float {
+                0% { transform: translate(0, 0) rotate(0deg); }
+                50% { transform: translate(50px, 50px) rotate(180deg); }
+                100% { transform: translate(0, 0) rotate(360deg); }
+            }
+            
+            .mouse-follow {
+                position: fixed;
+                width: 200px;
+                height: 200px;
+                background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, rgba(0, 119, 255, 0) 70%);
+                border-radius: 50%;
+                pointer-events: none;
+                transform: translate(-50%, -50%);
+                z-index: -1;
+                transition: transform 0.1s ease-out;
+                will-change: transform;
+            }
+            
+            .theme-toggle {
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                background: var(--dark-card);
+                backdrop-filter: blur(var(--blur));
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: var(--transition);
+                z-index: 100;
+                will-change: transform;
+            }
+            
+            body.light-mode .theme-toggle {
+                background: var(--light-card);
+                border: 1px solid rgba(0, 0, 0, 0.05);
+            }
+            
+            .theme-toggle:hover {
+                transform: scale(1.1);
+            }
+            
+            .theme-toggle i {
+                font-size: 1.2rem;
+            }
+            
+            body.light-mode .profile-pic {
+                background: linear-gradient(var(--light-bg), var(--light-bg)) padding-box,
+                            linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+            }
+            
+            body.light-mode .blog-card {
+                background: var(--light-card);
+                border: 1px solid rgba(0, 0, 0, 0.05);
+            }
+            
+            .blog-card {
+                background: var(--dark-card);
+                backdrop-filter: blur(var(--blur));
+                border-radius: var(--border-radius);
+                overflow: hidden;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                transition: var(--transition);
+                cursor: pointer;
+                width: 100%;
+                will-change: transform;
+            }
+            
+            .blog-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+                border-color: rgba(0, 212, 255, 0.3);
+            }
+            
+            .blog-posts {
+                width: 100%;
+                display: grid;
+                gap: var(--gap);
+            }
+            
+            .blog-image {
+                width: 100%;
+                height: 180px;
+                object-fit: cover;
+                display: block;
+            }
+            
+            .blog-content {
+                padding: 1.5rem;
+            }
+            
+            .blog-date {
+                font-size: 0.8rem;
+                opacity: 0.7;
+                display: block;
+                margin-bottom: 0.5rem;
+            }
+            
+            .blog-title {
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+                font-size: 1.1rem;
+                color: var(--primary);
+            }
+            
+            .blog-excerpt {
+                font-size: 0.9rem;
+                opacity: 0.9;
+                line-height: 1.5;
+                margin-bottom: 1rem;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            
+            .read-more {
+                background: none;
+                border: none;
+                color: var(--primary);
+                font-size: 0.9rem;
+                font-weight: 500;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+                cursor: pointer;
+                padding: 0;
+                transition: var(--transition);
+            }
+            
+            .read-more:hover {
+                gap: 0.5rem;
+            }
+            
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.8);
+                backdrop-filter: blur(5px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+                padding: 1rem;
+            }
+            
+            .modal.active {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .modal-content {
+                background: var(--dark-card);
+                backdrop-filter: blur(var(--blur));
+                border-radius: var(--border-radius);
+                max-width: 800px;
+                width: 100%;
+                max-height: 90vh;
+                overflow-y: auto;
+                transform: translateY(20px);
+                transition: var(--transition);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                margin: 0 auto;
+                will-change: transform;
+            }
+            
+            .modal.active .modal-content {
+                transform: translateY(0);
+            }
+            
+            .modal-header {
+                padding: 1.5rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                position: relative;
+            }
+            
+            .modal-title {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+            
+            .modal-date {
+                font-size: 0.9rem;
+                opacity: 0.7;
+            }
+            
+            .close-modal {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                background: none;
+                border: none;
+                color: inherit;
+                font-size: 1.5rem;
+                cursor: pointer;
+                opacity: 0.7;
+                transition: var(--transition);
+                will-change: transform;
+            }
+            
+            .close-modal:hover {
+                opacity: 1;
+                transform: rotate(90deg);
+            }
+            
+            .modal-image {
+                width: 100%;
+                max-height: 300px;
+                object-fit: cover;
+                display: block;
+            }
+            
+            .modal-body {
+                padding: 1.5rem;
+            }
+            
+            .modal-body p {
+                margin-bottom: 1rem;
+            }
+            
+            .modal-body h3 {
+                margin: 1.5rem 0 1rem;
+                font-size: 1.2rem;
+            }
+            
+            .modal-body ul, .modal-body ol {
+                margin-bottom: 1rem;
+                padding-left: 1.5rem;
+            }
+            
+            .modal-body li {
+                margin-bottom: 0.5rem;
+            }
+            
+            .modal-body a {
+                color: var(--primary);
+                text-decoration: none;
+            }
+            
+            .modal-body a:hover {
+                text-decoration: underline;
+            }
+            
+            .share-button {
+                margin-top: 1rem;
+                background: rgba(0, 0, 0, 0.2);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: var(--border-radius);
+                padding: 0.75rem 1.5rem;
+                color: inherit;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                transition: var(--transition);
+                font-family: inherit;
+                font-size: 0.9rem;
+            }
+            
+            .share-button:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+            
+            @media (max-width: 768px) {
+                .brand-name {
+                    font-size: 1.5rem;
+                }
+                
+                .blog-card {
+                    padding: 0.8rem;
+                }
+                
+                .modal-content {
+                    max-height: 95vh;
+                }
+                
+                .modal-header {
+                    padding: 1rem;
+                }
+                
+                .modal-body {
+                    padding: 1rem;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .profile-pic {
+                    width: 80px;
+                    height: 80px;
+                }
+                
+                .blog-image {
+                    height: 150px;
+                }
+                
+                .modal-title {
+                    font-size: 1.2rem;
+                }
+                
+                .container {
+                    padding: 0 0.5rem;
+                }
+                
+                .landing h1 {
+                    font-size: 2rem;
+                }
+                
+                .landing p {
+                    font-size: 1rem;
+                }
+                
+                .social-icons a {
+                    width: 40px;
+                    height: 40px;
+                    font-size: 1.2rem;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize the page
+        renderBlogPosts();
+    </script>
+</body>
+      </html>
