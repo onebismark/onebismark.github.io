@@ -23,17 +23,19 @@
             --primary: #00d4ff;
             --secondary: #0077ff;
             --dark-bg: #0a0a12;
-            --dark-card: rgba(15, 15, 25, 0.75);
+            --dark-card: rgba(15, 15, 25, 0.85);
             --light-bg: #f8f9fa;
-            --light-card: rgba(255, 255, 255, 0.85);
+            --light-card: rgba(255, 255, 255, 0.95);
             --text-dark: #f0f0f0;
-            --text-light: #333;
+            --text-light: #222;
             --transition: all 0.2s ease;
             --border-radius: 12px;
             --max-width: 800px;
             --gap: 1.5rem;
             --blur: 8px;
             --vh: 1vh;
+            --high-contrast-dark: #000;
+            --high-contrast-light: #fff;
         }
 
         * {
@@ -65,6 +67,16 @@
             color: var(--text-light);
         }
 
+        body.high-contrast {
+            background: var(--high-contrast-dark);
+            color: var(--high-contrast-light);
+        }
+
+        body.high-contrast.light-mode {
+            background: var(--high-contrast-light);
+            color: var(--high-contrast-dark);
+        }
+
         .container {
             width: 100%;
             max-width: var(--max-width);
@@ -92,6 +104,21 @@
             object-fit: cover;
             border: 3px solid transparent;
             background: linear-gradient(var(--dark-bg), var(--dark-bg)) padding-box,
+                        linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+        }
+
+        body.light-mode .profile-pic {
+            background: linear-gradient(var(--light-bg), var(--light-bg)) padding-box,
+                        linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+        }
+
+        body.high-contrast .profile-pic {
+            background: linear-gradient(var(--high-contrast-dark), var(--high-contrast-dark)) padding-box,
+                        linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+        }
+
+        body.high-contrast.light-mode .profile-pic {
+            background: linear-gradient(var(--high-contrast-light), var(--high-contrast-light)) padding-box,
                         linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
         }
 
@@ -178,10 +205,54 @@
             background: rgba(0, 212, 255, 0.1);
         }
 
+        body.high-contrast .social-icons a,
+        body.high-contrast.light-mode .social-icons a {
+            background: transparent;
+            border: 2px solid var(--primary);
+        }
+
+        /* Accessibility controls */
+        .accessibility-controls {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .accessibility-btn {
+            background: var(--dark-card);
+            backdrop-filter: blur(var(--blur));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .accessibility-btn:hover {
+            transform: scale(1.1);
+        }
+
+        body.light-mode .accessibility-btn {
+            background: var(--light-card);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        body.high-contrast .accessibility-btn,
+        body.high-contrast.light-mode .accessibility-btn {
+            border: 2px solid var(--primary);
+        }
+
         /* Non-critical CSS - Loads after initial render */
         .bg-particles, .mouse-follow, .theme-toggle, 
-        body.light-mode .profile-pic, body.light-mode .blog-card,
-        .blog-posts, .modal, .blog-card, .blog-container {
+        .blog-posts, .modal, .blog-card, .blog-container,
+        .about-section, .footer-links {
             display: none;
         }
 
@@ -197,7 +268,8 @@
         /* Print styles */
         @media print {
             .container:not(.blog-container), .theme-toggle, 
-            .bg-particles, .mouse-follow, .landing {
+            .bg-particles, .mouse-follow, .landing,
+            .accessibility-controls {
                 display: none;
             }
             .blog-container {
@@ -216,17 +288,31 @@
             .container, .profile, .landing {
                 opacity: 1;
             }
-            .bg-particles, .mouse-follow, .theme-toggle {
+            .bg-particles, .mouse-follow, .theme-toggle,
+            .accessibility-controls {
                 display: none;
             }
         </style>
     </noscript>
 </head>
 <body>
+    <!-- Accessibility Controls -->
+    <div class="accessibility-controls">
+        <button class="accessibility-btn" id="highContrastToggle" aria-label="Toggle high contrast mode">
+            <i class="fas fa-eye"></i>
+        </button>
+        <button class="accessibility-btn" id="themeToggle" aria-label="Toggle dark/light mode">
+            <i class="fas fa-moon"></i>
+        </button>
+        <button class="accessibility-btn" id="fontSizeToggle" aria-label="Increase font size">
+            <i class="fas fa-text-height"></i>
+        </button>
+    </div>
+
     <!-- Landing Page -->
     <div class="landing" id="landing">
         <div class="profile">
-            <img src="https://cdn.jsdelivr.net/gh/bismarkagyapong/files@master/markmix-diamond-profile-pic.webp" 
+            <img src="https://cdn.jsdelivr.net/gh/Markmix-Studios/msl-favicons/web-app-manifest-192x192.png" 
                  alt="Profile Picture" class="profile-pic" width="90" height="90" loading="eager">
             <h1 class="brand-name">𝑴𝒂𝒓𝒌𝒎𝒊𝒙 𝑺𝒕𝒖𝒅𝒊𝒐𝒔</h1>
             <h1>Welcome to Markmix Blog</h1>
@@ -260,8 +346,53 @@
         <!-- Blog posts will be dynamically inserted here -->
     </div>
 
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <h2>About Markmix Studios</h2>
+            <p>Markmix Studios is a creative hub focused on technology, design, and innovative solutions. Founded by Bismark Agyapong, we strive to create meaningful digital experiences that inspire and empower.</p>
+            <p>Our blog shares insights on web development, design principles, and creative thinking to help you grow your skills and stay updated with industry trends.</p>
+        </div>
+    </section>
+
+    <!-- Footer Links -->
+ <div class="footer-links">
+    <div class="container">
+        <div class="links-grid">
+            <div class="links-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#" id="contact-link">Contact</a></li>
+                </ul>
+            </div>
+                <div class="links-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Freebies</a></li>
+                        <li><a href="#">Templates</a></li>
+                        <li><a href="#">Tools</a></li>
+                    </ul>
+                </div>
+                <div class="links-column">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="https://twitter.com/markmixstudios">Twitter</a></li>
+                        <li><a href="https://instagram.com/markmix.studios">Instagram</a></li>
+                        <li><a href="https://github.com/markmixstudios">GitHub</a></li>
+                        <li><a href="https://linkedin.com/in/yourprofile">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         &copy; <span id="year"></span> Markmix Studios. All rights reserved.
+        <p class="footer-note">Made with <i class="fas fa-heart" style="color: #ff0000;"></i> and <i class="fas fa-coffee"></i></p>
     </footer>
 
     <!-- Blog post modal -->
@@ -271,10 +402,40 @@
                 <button class="close-modal" id="close-modal" aria-label="Close modal">&times;</button>
                 <h2 class="modal-title" id="modal-title">Blog Post Title</h2>
                 <span class="modal-date" id="modal-date">June 1, 2023</span>
+                <button class="back-to-blog" id="back-to-blog" aria-label="Back to blog">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
             </div>
             <img src="" alt="" class="modal-image" id="modal-image" loading="lazy">
             <div class="modal-body" id="modal-body">
                 <!-- Blog post content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contact-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-modal" id="close-contact-modal" aria-label="Close contact modal">&times;</button>
+                <h2 class="modal-title">Contact Me</h2>
+            </div>
+            <div class="modal-body">
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
             </div>
         </div>
     </div>
@@ -289,34 +450,49 @@
 
         // Handle route changes
         function handleRoute() {
-            const hash = window.location.hash.replace('#', '');
-            
-            if (hash === 'blog' || hash.startsWith('blog-post-')) {
-                document.getElementById('landing').style.display = 'none';
-                document.querySelector('.blog-container').style.display = 'flex';
-                
-                if (hash.startsWith('blog-post-')) {
-                    setTimeout(() => {
-                        const postId = hash.split('blog-post-')[1];
-                        openPostModal(parseInt(postId));
-                        window.scrollTo(0, 0);
-                    }, 100);
-                }
-            }
+    const hash = window.location.hash.replace('#', '');
+    
+    // Always show these sections
+    document.querySelector('.about-section').style.display = 'block';
+    document.querySelector('.footer-links').style.display = 'block';
+    
+    if (hash === 'blog' || hash.startsWith('blog-post-')) {
+        document.getElementById('landing').style.display = 'none';
+        document.querySelector('.blog-posts').style.display = 'block';
+        
+        if (hash.startsWith('blog-post-')) {
+            setTimeout(() => {
+                const postId = hash.split('blog-post-')[1];
+                openPostModal(parseInt(postId));
+                window.scrollTo(0, 0);
+            }, 100);
         }
+    } else if (hash === 'about') {
+        document.getElementById('landing').style.display = 'none';
+        document.querySelector('.blog-posts').style.display = 'none';
+        window.scrollTo(0, document.getElementById('about').offsetTop);
+    } else {
+        document.getElementById('landing').style.display = 'flex';
+        document.querySelector('.blog-posts').style.display = 'none';
+    }
+}
 
         // Initialize route handler
         window.addEventListener('load', function() {
-            // Set mobile viewport height
-            const setVh = () => {
-                document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-            };
-            setVh();
-            window.addEventListener('resize', setVh);
-            
-            // Handle initial route
-            handleRoute();
-        });
+    // Set mobile viewport height
+    const setVh = () => {
+        document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    };
+    setVh();
+    window.addEventListener('resize', setVh);
+    
+    // Show about and footer sections by default
+    document.querySelector('.about-section').style.display = 'block';
+    document.querySelector('.footer-links').style.display = 'block';
+    
+    // Handle initial route
+    handleRoute();
+});
         
         window.addEventListener('hashchange', handleRoute);
     </script>
@@ -380,14 +556,16 @@
         const modalImage = document.getElementById('modal-image');
         const modalBody = document.getElementById('modal-body');
         const closeModalBtn = document.getElementById('close-modal');
+        const backToBlogBtn = document.getElementById('back-to-blog');
+        const contactModal = document.getElementById('contact-modal');
+        const closeContactModalBtn = document.getElementById('close-contact-modal');
+        const contactLink = document.getElementById('contact-link');
+        const contactForm = document.getElementById('contact-form');
+        const themeToggle = document.getElementById('themeToggle');
+        const highContrastToggle = document.getElementById('highContrastToggle');
+        const fontSizeToggle = document.getElementById('fontSizeToggle');
 
         // Theme toggle functionality
-        const themeToggle = document.createElement('div');
-        themeToggle.className = 'theme-toggle';
-        themeToggle.id = 'themeToggle';
-        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-        document.body.appendChild(themeToggle);
-        
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
             const icon = themeToggle.querySelector('i');
@@ -401,10 +579,43 @@
             }
         });
         
-        // Check saved theme
+        // High contrast toggle
+        highContrastToggle.addEventListener('click', () => {
+            document.body.classList.toggle('high-contrast');
+            const icon = highContrastToggle.querySelector('i');
+            
+            if (document.body.classList.contains('high-contrast')) {
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+                localStorage.setItem('highContrast', 'enabled');
+            } else {
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+                localStorage.setItem('highContrast', 'disabled');
+            }
+        });
+
+        // Font size toggle
+        let fontSizeLevel = 0;
+        fontSizeToggle.addEventListener('click', () => {
+            fontSizeLevel = (fontSizeLevel + 1) % 3;
+            document.body.style.fontSize = fontSizeLevel === 0 ? '100%' : fontSizeLevel === 1 ? '120%' : '140%';
+            localStorage.setItem('fontSize', fontSizeLevel);
+        });
+
+        // Check saved preferences
         if (localStorage.getItem('theme') === 'light') {
             document.body.classList.add('light-mode');
             themeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+        }
+
+        if (localStorage.getItem('highContrast') === 'enabled') {
+            document.body.classList.add('high-contrast');
+            highContrastToggle.querySelector('i').classList.replace('fa-eye', 'fa-eye-slash');
+        }
+
+        const savedFontSize = localStorage.getItem('fontSize');
+        if (savedFontSize) {
+            fontSizeLevel = parseInt(savedFontSize);
+            document.body.style.fontSize = fontSizeLevel === 0 ? '100%' : fontSizeLevel === 1 ? '120%' : '140%';
         }
 
         // Mouse follow glow effect
@@ -552,18 +763,75 @@
             window.location.hash = 'blog';
         }
 
-        // Event listeners for modal
+        // Back to blog function
+        function backToBlog() {
+            closePostModal();
+            window.location.hash = 'blog';
+        }
+
+        // Open contact modal
+        function openContactModal() {
+            contactModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close contact modal
+        function closeContactModal() {
+            contactModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Handle contact form submission
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            // Here you would typically send the form data to a server
+            alert('Thank you for your message! I will get back to you soon.');
+            contactForm.reset();
+            closeContactModal();
+        }
+
+        // Event listeners
         closeModalBtn.addEventListener('click', closePostModal);
+        backToBlogBtn.addEventListener('click', backToBlog);
         postModal.addEventListener('click', (e) => {
             if (e.target === postModal) {
                 closePostModal();
             }
         });
 
+        contactLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            openContactModal();
+        });
+
+        closeContactModalBtn.addEventListener('click', closeContactModal);
+        contactModal.addEventListener('click', (e) => {
+            if (e.target === contactModal) {
+                closeContactModal();
+            }
+        });
+
+        contactForm.addEventListener('submit', handleContactSubmit);
+
         // Close modal with ESC key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && postModal.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                if (postModal.classList.contains('active')) {
+                    closePostModal();
+                } else if (contactModal.classList.contains('active')) {
+                    closeContactModal();
+                }
+            }
+        });
+
+        // Handle browser back button
+        window.addEventListener('popstate', function(event) {
+            if (postModal.classList.contains('active')) {
                 closePostModal();
+            } else if (contactModal.classList.contains('active')) {
+                closeContactModal();
+            } else {
+                handleRoute();
             }
         });
 
@@ -571,8 +839,9 @@
         const style = document.createElement('style');
         style.textContent = `
             .bg-particles, .mouse-follow, .theme-toggle, 
-            .blog-posts, .blog-card, .blog-container {
-                display: block;
+.blog-posts, .modal, .blog-card, .blog-container {
+    display: none;
+}
             }
             
             .particle {
@@ -606,8 +875,8 @@
             
             .theme-toggle {
                 position: fixed;
-                top: 1rem;
-                right: 1rem;
+                bottom: 1rem;
+                left: 1rem;
                 background: var(--dark-card);
                 backdrop-filter: blur(var(--blur));
                 border: 1px solid rgba(255, 255, 255, 0.1);
@@ -628,6 +897,11 @@
                 border: 1px solid rgba(0, 0, 0, 0.05);
             }
             
+            body.high-contrast .theme-toggle,
+            body.high-contrast.light-mode .theme-toggle {
+                border: 2px solid var(--primary);
+            }
+            
             .theme-toggle:hover {
                 transform: scale(1.1);
             }
@@ -641,9 +915,29 @@
                             linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
             }
             
+            body.high-contrast .profile-pic {
+                background: linear-gradient(var(--high-contrast-dark), var(--high-contrast-dark)) padding-box,
+                            linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+            }
+            
+            body.high-contrast.light-mode .profile-pic {
+                background: linear-gradient(var(--high-contrast-light), var(--high-contrast-light)) padding-box,
+                            linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+            }
+            
             body.light-mode .blog-card {
                 background: var(--light-card);
                 border: 1px solid rgba(0, 0, 0, 0.05);
+            }
+            
+            body.high-contrast .blog-card,
+            body.high-contrast.light-mode .blog-card {
+                background: var(--high-contrast-dark);
+                border: 2px solid var(--primary);
+            }
+            
+            body.high-contrast.light-mode .blog-card {
+                background: var(--high-contrast-light);
             }
             
             .blog-card {
@@ -662,6 +956,11 @@
                 transform: translateY(-3px);
                 box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
                 border-color: rgba(0, 212, 255, 0.3);
+            }
+            
+            body.high-contrast .blog-card:hover,
+            body.high-contrast.light-mode .blog-card:hover {
+                border-color: var(--secondary);
             }
             
             .blog-posts {
@@ -762,6 +1061,11 @@
                 will-change: transform;
             }
             
+            body.high-contrast .modal-content,
+            body.high-contrast.light-mode .modal-content {
+                border: 2px solid var(--primary);
+            }
+            
             .modal.active .modal-content {
                 transform: translateY(0);
             }
@@ -770,6 +1074,8 @@
                 padding: 1.5rem;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
                 position: relative;
+                display: flex;
+                flex-direction: column;
             }
             
             .modal-title {
@@ -781,6 +1087,7 @@
             .modal-date {
                 font-size: 0.9rem;
                 opacity: 0.7;
+                margin-bottom: 1rem;
             }
             
             .close-modal {
@@ -800,6 +1107,26 @@
             .close-modal:hover {
                 opacity: 1;
                 transform: rotate(90deg);
+            }
+            
+            .back-to-blog {
+                position: absolute;
+                top: 1rem;
+                left: 1rem;
+                background: none;
+                border: none;
+                color: inherit;
+                font-size: 0.9rem;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+                transition: var(--transition);
+            }
+            
+            .back-to-blog:hover {
+                color: var(--primary);
+                gap: 0.5rem;
             }
             
             .modal-image {
@@ -860,6 +1187,155 @@
                 background: rgba(255, 255, 255, 0.1);
             }
             
+            /* About Section */
+            .about-section {
+                padding: 3rem 0;
+                background: var(--dark-card);
+                backdrop-filter: blur(var(--blur));
+                width: 100%;
+                margin-top: 2rem;
+            }
+            
+            body.light-mode .about-section {
+                background: var(--light-card);
+            }
+            
+            body.high-contrast .about-section {
+                background: var(--high-contrast-dark);
+                border-top: 2px solid var(--primary);
+                border-bottom: 2px solid var(--primary);
+            }
+            
+            body.high-contrast.light-mode .about-section {
+                background: var(--high-contrast-light);
+            }
+            
+            .about-section h2 {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+                color: var(--primary);
+                text-align: center;
+            }
+            
+            .about-section p {
+                margin-bottom: 1rem;
+                max-width: 700px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            /* Footer Links */
+            .footer-links {
+                padding: 3rem 0;
+                background: var(--dark-bg);
+                width: 100%;
+            }
+            
+            body.light-mode .footer-links {
+                background: var(--light-bg);
+            }
+            
+            body.high-contrast .footer-links {
+                background: var(--high-contrast-dark);
+                border-top: 2px solid var(--primary);
+            }
+            
+            body.high-contrast.light-mode .footer-links {
+                background: var(--high-contrast-light);
+            }
+            
+            .links-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 2rem;
+                margin-top: 2rem;
+            }
+            
+            .links-column h3 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+                color: var(--primary);
+            }
+            
+            .links-column ul {
+                list-style: none;
+            }
+            
+            .links-column li {
+                margin-bottom: 0.75rem;
+            }
+            
+            .links-column a {
+                color: inherit;
+                text-decoration: none;
+                transition: var(--transition);
+            }
+            
+            .links-column a:hover {
+                color: var(--primary);
+                padding-left: 0.3rem;
+            }
+            
+            .footer-note {
+                margin-top: 1rem;
+                font-size: 0.9rem;
+                opacity: 0.8;
+            }
+            
+            /* Contact Form */
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+            
+            .form-group label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+            }
+            
+            .form-group input,
+            .form-group textarea {
+                width: 100%;
+                padding: 0.75rem;
+                border-radius: var(--border-radius);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                background: rgba(255, 255, 255, 0.1);
+                color: inherit;
+                font-family: inherit;
+            }
+            
+            body.light-mode .form-group input,
+            body.light-mode .form-group textarea {
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                background: rgba(0, 0, 0, 0.05);
+            }
+            
+            body.high-contrast .form-group input,
+            body.high-contrast .form-group textarea,
+            body.high-contrast.light-mode .form-group input,
+            body.high-contrast.light-mode .form-group textarea {
+                border: 2px solid var(--primary);
+                background: transparent;
+            }
+            
+            .submit-btn {
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                color: white;
+                border: none;
+                padding: 0.8rem 2rem;
+                border-radius: 50px;
+                font-size: 1rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: var(--transition);
+                width: 100%;
+            }
+            
+            .submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            }
+            
             @media (max-width: 768px) {
                 .brand-name {
                     font-size: 1.5rem;
@@ -879,6 +1355,11 @@
                 
                 .modal-body {
                     padding: 1rem;
+                }
+                
+                .about-section,
+                .footer-links {
+                    padding: 2rem 0;
                 }
             }
             
@@ -913,6 +1394,15 @@
                     height: 40px;
                     font-size: 1.2rem;
                 }
+                
+                .links-grid {
+                    grid-template-columns: 1fr;
+                }
+                
+                .accessibility-controls {
+                    bottom: 0.5rem;
+                    left: 0.5rem;
+                }
             }
         `;
         document.head.appendChild(style);
@@ -921,4 +1411,4 @@
         renderBlogPosts();
     </script>
 </body>
-      </html>
+</html>
