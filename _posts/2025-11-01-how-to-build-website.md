@@ -31,7 +31,7 @@ This step is to quickly browse through the various Jekyll themes available on va
 Few sites where you can grab these templates:
 
 * <https://jekyllthemes.io/>
-* <http://jekyllthemes.org/>
+* <https://jekyllthemes.org/>
 * <https://jekyll-themes.com/>
 * <https://jamstackthemes.dev/ssg/jekyll/>
 
