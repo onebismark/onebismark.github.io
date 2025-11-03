@@ -28,6 +28,16 @@ Did I convince you? OK, now let's break down the steps to setup your blogging si
 
 This step is to quickly browse through the various Jekyll themes available on various websites and pick one that fits your taste
 
+<<<<<<< HEAD
+=======
+Few sites where you can grab these templates:
+
+* <https://jekyllthemes.io/>
+* <https://jekyllthemes.org/>
+* <https://jekyll-themes.com/>
+* <https://jamstackthemes.dev/ssg/jekyll/>
+
+>>>>>>> 90e878699949524c0a314f99c27228365a909ff3
 I personally picked the [Chirpy theme](https://github.com/cotes2020/chirpy-starter/) since it fits my expectations and it has a Dark theme :D.
 
 
