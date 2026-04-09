@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSBUNDLE | Affordable Data</title>
+
+  <meta name="description" content="Buy affordable data bundles instantly with MSBUNDLE. Fast, reliable and secure.">
+
+  <!-- ⚡ PRELOAD IMAGE -->
+  <link rel="preload" as="image" href="bundle.webp">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #020617;
+      color: #fff;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: #020617;
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    header h1 {
+      font-size: 20px;
+      letter-spacing: 1px;
+    }
+
+    section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .hero img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    p {
+      color: #cbd5f5;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #22c55e;
+      color: #000;
+      padding: 14px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    .card {
+      background: #0f172a;
+      padding: 20px;
+      margin: 10px auto;
+      border-radius: 10px;
+      max-width: 300px;
+    }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    #countdownText {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #cbd5f5;
+      min-height: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>MSBUNDLE SERVICES</h1>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <img
+    src="bundle.webp"
+    alt="MSBUNDLE Flyer"
+    width="400"
+    height="300"
+    loading="eager"
+    decoding="async"
+  >
+
+  <h2>Affordable Data Bundles</h2>
+  <p>Fast. Reliable. Smooth.</p>
+
+  <div class="btn" id="enterStoreBtn">Enter Store Now</div>
+  <div id="countdownText"></div>
+</section>
+
+<section>
+  <h2>How It Works</h2>
+
+  <div class="card"><p>1. Click Enter Store</p></div>
+  <div class="card"><p>2. Select your bundle</p></div>
+  <div class="card"><p>3. Make payment</p></div>
+  <div class="card"><p>4. Receive your bundle</p></div>
+</section>
+
+<section>
+  <h2>Contact Agent</h2>
+  <p>Need help? Reach out instantly</p>
+
+  <a href="https://wa.me/233552628597" class="btn">WhatsApp</a>
+</section>
+
+<footer>
+  © 2026 MSBUNDLE. All rights reserved.
+</footer>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+
+  const storeURL = "https://msbundle.citygh.com";
+  const KEY = "msbundle_last_visit";
+  const MINUTES_30 = 30 * 60 * 1000;
+
+  const btn = document.getElementById("enterStoreBtn");
+  const text = document.getElementById("countdownText");
+
+  // ---------- NETWORK CHECK ----------
+  function isSlowNetwork() {
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+    if (!conn) return false;
+
+    return (
+      conn.effectiveType === "slow-2g" ||
+      conn.effectiveType === "2g" ||
+      (conn.downlink && conn.downlink < 0.5) ||
+      (conn.rtt && conn.rtt > 800)
+    );
+  }
+
+  // ---------- SAFE AUTO REDIRECT (FIXED) ----------
+  (function handleAutoRedirect() {
+
+    const lastVisit = localStorage.getItem(KEY);
+
+    // 🚨 FIRST VISIT = ABSOLUTE BLOCK
+    if (!lastVisit) {
+      return;
+    }
+
+    const now = Date.now();
+    const diff = now - parseInt(lastVisit, 10);
+
+    // ✅ RETURNING USERS ONLY
+    if (diff < MINUTES_30) {
+      window.location.replace(storeURL);
+    }
+
+  })();
+
+  // ---------- MARK VISIT SAFELY (NO RACE CONDITION) ----------
+  setTimeout(() => {
+    if (!localStorage.getItem(KEY)) {
+      localStorage.setItem(KEY, Date.now());
+    }
+  }, 1500);
+
+  // ---------- BUTTON CLICK ----------
+  btn.addEventListener("click", () => {
+
+    const slowNet = isSlowNetwork();
+
+    if (!slowNet) {
+      text.innerText = "Opening now...";
+      window.location.href = storeURL;
+      return;
+    }
+
+    let timeLeft = 3;
+    text.innerText = `Opening in ${timeLeft} seconds...`;
+
+    const timer = setInterval(() => {
+      timeLeft--;
+
+      if (timeLeft > 0) {
+        text.innerText = `Opening in ${timeLeft} seconds...`;
+      } else {
+        clearInterval(timer);
+        text.innerText = "Opening now...";
+        window.location.href = storeURL;
+      }
+    }, 1000);
+
+  });
+
+});
+</script>
+
+</body>
+</html>
