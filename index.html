@@ -196,14 +196,6 @@
       background: #FFFFFF;
     }
 
-    #countdownText {
-      margin-top: 12px;
-      font-size: clamp(12px, 3vw, 14px);
-      color: #666666;
-      min-height: 24px;
-      font-weight: 500;
-    }
-
     /* Contact section styling */
     .contact-buttons {
       display: flex;
@@ -268,7 +260,6 @@
       <p>Fast. Reliable. Smooth.</p>
 
       <div class="btn" id="enterStoreBtn">Enter Store Now</div>
-      <div id="countdownText"></div>
     </div>
   </section>
 
@@ -304,10 +295,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const storeURL = "https://msbundle.citygh.com";
   const KEY = "msbundle_last_visit";
-  const MINUTES_30 = 30 * 60 * 1000;
 
   const btn = document.getElementById("enterStoreBtn");
-  const text = document.getElementById("countdownText");
 
   // ---------- MARK VISIT FOR FIRST-TIME USERS ----------
   setTimeout(() => {
@@ -316,46 +305,9 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }, 1500);
 
-  // ---------- NETWORK CHECK ----------
-  function isSlowNetwork() {
-    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-
-    if (!conn) return false;
-
-    return (
-      conn.effectiveType === "slow-2g" ||
-      conn.effectiveType === "2g" ||
-      (conn.downlink && conn.downlink < 0.5) ||
-      (conn.rtt && conn.rtt > 800)
-    );
-  }
-
-  // ---------- BUTTON CLICK ----------
+  // ---------- BUTTON CLICK - OPENS INSTANTLY ----------
   btn.addEventListener("click", () => {
-
-    const slowNet = isSlowNetwork();
-
-    if (!slowNet) {
-      text.innerText = "Opening now...";
-      window.location.href = storeURL;
-      return;
-    }
-
-    let timeLeft = 3;
-    text.innerText = `Opening in ${timeLeft} seconds...`;
-
-    const timer = setInterval(() => {
-      timeLeft--;
-
-      if (timeLeft > 0) {
-        text.innerText = `Opening in ${timeLeft} seconds...`;
-      } else {
-        clearInterval(timer);
-        text.innerText = "Opening now...";
-        window.location.href = storeURL;
-      }
-    }, 1000);
-
+    window.location.href = storeURL;
   });
 
 });
