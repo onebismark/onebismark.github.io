@@ -218,13 +218,6 @@
       -webkit-tap-highlight-color: rgba(245, 166, 35, 0.1);
     }
 
-    /* Container utility */
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
     /* Hero content wrapper */
     .hero-content {
       max-width: 600px;
@@ -255,8 +248,8 @@
       <h2>Affordable Data Bundles</h2>
       <p>Fast. Reliable. Smooth.</p>
 
-      <div class="btn" id="enterStoreBtn" role="button" tabindex="0">Enter Store Now</div>
-      <div id="countdownText" aria-live="polite"></div>
+      <div class="btn" id="enterStoreBtn">Enter Store Now</div>
+      <div id="countdownText"></div>
     </div>
   </section>
 
@@ -278,7 +271,7 @@
     <p>Need help? Reach out instantly</p>
 
     <div class="contact-buttons">
-      <a href="https://wa.me/233552628597" class="btn" role="button">WhatsApp</a>
+      <a href="https://wa.me/233552628597" class="btn">WhatsApp</a>
     </div>
   </section>
 </main>
@@ -364,14 +357,6 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     }, 1000);
 
-  });
-
-  // ---------- Keyboard accessibility ----------
-  btn.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      btn.click();
-    }
   });
 
 });
