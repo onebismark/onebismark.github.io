@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>MSBUNDLE | Affordable Data</title>
 
   <meta name="description" content="Buy affordable data bundles instantly with MSBUNDLE. Fast, reliable and secure.">
@@ -15,90 +15,220 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
     }
 
     body {
       background: #FFFFFF;
       color: #1A1A1A;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     header {
       position: sticky;
       top: 0;
       background: #FFFFFF;
-      padding: 15px;
+      padding: clamp(12px, 3vw, 20px);
       text-align: center;
       border-bottom: 1px solid #E5E5E5;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
 
     header h1 {
-      font-size: 20px;
-      letter-spacing: 1px;
+      font-size: clamp(18px, 5vw, 24px);
+      letter-spacing: 0.5px;
       color: #1A1A1A;
     }
 
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: clamp(20px, 5vw, 40px) clamp(16px, 4vw, 24px);
+    }
+
     section {
-      padding: 40px 20px;
+      margin-bottom: clamp(40px, 8vw, 60px);
       text-align: center;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .hero img {
       width: 100%;
-      max-width: 400px;
-      border-radius: 12px;
-      margin-bottom: 20px;
+      max-width: min(400px, 90%);
+      height: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: clamp(20px, 5vw, 30px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     h2 {
-      margin-bottom: 10px;
-      font-size: 24px;
+      margin-bottom: clamp(8px, 2vw, 12px);
+      font-size: clamp(22px, 6vw, 32px);
       color: #1A1A1A;
+      font-weight: 700;
     }
 
     p {
       color: #666666;
-      margin-bottom: 20px;
-      font-size: 14px;
+      margin-bottom: clamp(16px, 4vw, 24px);
+      font-size: clamp(14px, 3.5vw, 16px);
+      line-height: 1.5;
     }
 
     .btn {
       display: inline-block;
       background: #F5A623;
       color: #1A1A1A;
-      padding: 14px 22px;
-      border-radius: 8px;
+      padding: clamp(12px, 3vw, 16px) clamp(20px, 5vw, 28px);
+      border-radius: 12px;
       text-decoration: none;
-      font-weight: bold;
-      margin: 5px;
+      font-weight: 700;
+      margin: 8px;
       cursor: pointer;
+      font-size: clamp(14px, 3.5vw, 16px);
+      transition: all 0.2s ease;
+      border: none;
+      box-shadow: 0 2px 8px rgba(245, 166, 35, 0.2);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn:hover {
+      background: #E8951A;
+      box-shadow: 0 4px 12px rgba(245, 166, 35, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(245, 166, 35, 0.2);
+    }
+
+    /* Desktop: larger buttons */
+    @media (min-width: 768px) {
+      .btn {
+        min-width: 200px;
+      }
+    }
+
+    /* Cards Grid - Responsive */
+    .cards-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(12px, 3vw, 20px);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Tablet and Desktop: 2 columns */
+    @media (min-width: 640px) {
+      .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 700px;
+      }
+    }
+
+    /* Desktop: 4 columns */
+    @media (min-width: 1024px) {
+      .cards-container {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 1000px;
+      }
     }
 
     .card {
       background: #F8F9FA;
-      padding: 20px;
-      margin: 10px auto;
-      border-radius: 10px;
-      max-width: 300px;
+      padding: clamp(20px, 5vw, 28px) clamp(16px, 4vw, 20px);
+      border-radius: 16px;
       border: 1px solid #E5E5E5;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
     }
 
     .card p {
       color: #1A1A1A;
+      margin-bottom: 0;
+      font-weight: 500;
+      font-size: clamp(15px, 3.5vw, 18px);
     }
 
     footer {
-      padding: 20px;
+      padding: clamp(16px, 4vw, 24px);
       text-align: center;
-      font-size: 13px;
+      font-size: clamp(12px, 3vw, 14px);
       color: #999999;
+      border-top: 1px solid #E5E5E5;
+      margin-top: auto;
+      background: #FFFFFF;
     }
 
     #countdownText {
-      margin-top: 10px;
-      font-size: 13px;
+      margin-top: 12px;
+      font-size: clamp(12px, 3vw, 14px);
       color: #666666;
-      min-height: 18px;
+      min-height: 24px;
+      font-weight: 500;
+    }
+
+    /* Contact section styling */
+    .contact-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    /* Touch-friendly tap targets */
+    @media (max-width: 640px) {
+      .btn {
+        display: block;
+        width: 100%;
+        max-width: 300px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .card {
+        cursor: default;
+      }
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Improve tap highlight on mobile */
+    .btn, .card {
+      -webkit-tap-highlight-color: rgba(245, 166, 35, 0.1);
+    }
+
+    /* Container utility */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Hero content wrapper */
+    .hero-content {
+      max-width: 600px;
+      margin: 0 auto;
     }
   </style>
 </head>
@@ -109,39 +239,49 @@
   <h1>MSBUNDLE SERVICES</h1>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <img
-    src="bundle.webp"
-    alt="MSBUNDLE Flyer"
-    width="400"
-    height="300"
-    loading="eager"
-    decoding="async"
-  >
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <img
+      src="bundle.webp"
+      alt="MSBUNDLE Flyer"
+      width="400"
+      height="300"
+      loading="eager"
+      decoding="async"
+    >
 
-  <h2>Affordable Data Bundles</h2>
-  <p>Fast. Reliable. Smooth.</p>
+    <div class="hero-content">
+      <h2>Affordable Data Bundles</h2>
+      <p>Fast. Reliable. Smooth.</p>
 
-  <div class="btn" id="enterStoreBtn">Enter Store Now</div>
-  <div id="countdownText"></div>
-</section>
+      <div class="btn" id="enterStoreBtn" role="button" tabindex="0">Enter Store Now</div>
+      <div id="countdownText" aria-live="polite"></div>
+    </div>
+  </section>
 
-<section>
-  <h2>How It Works</h2>
+  <!-- HOW IT WORKS -->
+  <section>
+    <h2>How It Works</h2>
 
-  <div class="card"><p>1. Click Enter Store</p></div>
-  <div class="card"><p>2. Select your bundle</p></div>
-  <div class="card"><p>3. Make payment</p></div>
-  <div class="card"><p>4. Receive your bundle</p></div>
-</section>
+    <div class="cards-container">
+      <div class="card"><p>1. Click Enter Store</p></div>
+      <div class="card"><p>2. Select your bundle</p></div>
+      <div class="card"><p>3. Make payment</p></div>
+      <div class="card"><p>4. Receive your bundle</p></div>
+    </div>
+  </section>
 
-<section>
-  <h2>Contact Agent</h2>
-  <p>Need help? Reach out instantly</p>
+  <!-- CONTACT -->
+  <section>
+    <h2>Contact Agent</h2>
+    <p>Need help? Reach out instantly</p>
 
-  <a href="https://wa.me/233552628597" class="btn">WhatsApp</a>
-</section>
+    <div class="contact-buttons">
+      <a href="https://wa.me/233552628597" class="btn" role="button">WhatsApp</a>
+    </div>
+  </section>
+</main>
 
 <footer>
   © 2026 MSBUNDLE. All rights reserved.
@@ -224,6 +364,14 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     }, 1000);
 
+  });
+
+  // ---------- Keyboard accessibility ----------
+  btn.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      btn.click();
+    }
   });
 
 });
