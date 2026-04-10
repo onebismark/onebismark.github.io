@@ -7,6 +7,25 @@
 
   <meta name="description" content="Buy affordable data bundles instantly with MSBUNDLE. Fast, reliable and secure.">
 
+  <!-- ⚡ INSTANT AUTO REDIRECT FOR RETURNING USERS (Runs before page renders) -->
+  <script>
+    (function() {
+      const storeURL = "https://msbundle.citygh.com";
+      const KEY = "msbundle_last_visit";
+      const MINUTES_30 = 30 * 60 * 1000;
+
+      const lastVisit = localStorage.getItem(KEY);
+      const now = Date.now();
+
+      if (lastVisit) {
+        const diff = now - parseInt(lastVisit, 10);
+        if (diff < MINUTES_30) {
+          window.location.replace(storeURL);
+        }
+      }
+    })();
+  </script>
+
   <!-- ⚡ PRELOAD IMAGE -->
   <link rel="preload" as="image" href="bundle.webp">
 
@@ -290,6 +309,13 @@ window.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("enterStoreBtn");
   const text = document.getElementById("countdownText");
 
+  // ---------- MARK VISIT FOR FIRST-TIME USERS ----------
+  setTimeout(() => {
+    if (!localStorage.getItem(KEY)) {
+      localStorage.setItem(KEY, Date.now());
+    }
+  }, 1500);
+
   // ---------- NETWORK CHECK ----------
   function isSlowNetwork() {
     const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
@@ -303,33 +329,6 @@ window.addEventListener("DOMContentLoaded", () => {
       (conn.rtt && conn.rtt > 800)
     );
   }
-
-  // ---------- SAFE AUTO REDIRECT (FIXED) ----------
-  (function handleAutoRedirect() {
-
-    const lastVisit = localStorage.getItem(KEY);
-
-    // 🚨 FIRST VISIT = ABSOLUTE BLOCK
-    if (!lastVisit) {
-      return;
-    }
-
-    const now = Date.now();
-    const diff = now - parseInt(lastVisit, 10);
-
-    // ✅ RETURNING USERS ONLY
-    if (diff < MINUTES_30) {
-      window.location.replace(storeURL);
-    }
-
-  })();
-
-  // ---------- MARK VISIT SAFELY (NO RACE CONDITION) ----------
-  setTimeout(() => {
-    if (!localStorage.getItem(KEY)) {
-      localStorage.setItem(KEY, Date.now());
-    }
-  }, 1500);
 
   // ---------- BUTTON CLICK ----------
   btn.addEventListener("click", () => {
